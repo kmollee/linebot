@@ -18,7 +18,7 @@ RUN cd /app && CGO_ENABLED=0 go build -o /goapp
 # is based on scratch, which doesn't have adduser, cat, echo, or even sh.
 # RUN echo "nobody:x:65534:65534:nodoby:/:" > /etc_passwd
 # The second and final stage
-FROM scratch
+FROM heroku/heroku:16
 
 ENV HOME /app
 WORKDIR /app
@@ -32,8 +32,10 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # COPY --from=0 /etc_passwd /etc/passwd
 # Run as the new non-root by default
 # USER nobody
+RUN useradd -m heroku
+USER heroku
 
 EXPOSE 80
 # ENTRYPOINT [ "/app" ]
 
-CMD [ "./goapp" ]
+CMD [ "/app/goapp" ]
