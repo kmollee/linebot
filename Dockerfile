@@ -32,3 +32,5 @@ COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # EXPOSE 80
 # ENTRYPOINT [ "/app" ]
+
+CMD [ "/app" ]
