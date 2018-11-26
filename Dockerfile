@@ -30,5 +30,5 @@ COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Run as the new non-root by default
 # USER nobody
 
-EXPOSE 80
-ENTRYPOINT [ "/app" ]
+# EXPOSE 80
+# ENTRYPOINT [ "/app" ]
