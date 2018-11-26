@@ -19,7 +19,9 @@ RUN cd /app && CGO_ENABLED=0 go build -o /goapp
 # RUN echo "nobody:x:65534:65534:nodoby:/:" > /etc_passwd
 # The second and final stage
 FROM scratch
-WORKDIR /root/
+
+ENV HOME /app
+WORKDIR /app
 # Copy the binary from the builder stage
 COPY --from=builder  /goapp .
 # Copy the certs from the builder stage
