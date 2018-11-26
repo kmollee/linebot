@@ -3,7 +3,7 @@
 # By using a scratch base image, we save about ~5MB over Alpine base images and we ship with a smaller attack surface.
 # This is the first stage, for building things that will be required by the
 # final stage (notably the binary)
-FROM golang
+FROM golang as builder
 # Copy in just the go.mod and go.sum files, and download the dependencies. By
 # doing this before copying in the other dependencies, the Docker build cache
 # can skip these steps so long as neither of these two files change.
@@ -19,10 +19,11 @@ RUN cd /app && CGO_ENABLED=0 go build -o /goapp
 # RUN echo "nobody:x:65534:65534:nodoby:/:" > /etc_passwd
 # The second and final stage
 FROM scratch
+WORKDIR /root/
 # Copy the binary from the builder stage
-COPY --from=0 /goapp /app
+COPY --from=builder  /goapp .
 # Copy the certs from the builder stage
-COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy the /etc_passwd file we created in the builder stage into /etc/passwd in
 # the target stage. This creates a new non-root user as a security best
 # practice.
@@ -33,4 +34,4 @@ COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 EXPOSE 80
 # ENTRYPOINT [ "/app" ]
 
-CMD [ "/app" ]
+CMD [ "./goapp" ]
