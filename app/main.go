@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/google/logger"
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -11,11 +12,18 @@ import (
 )
 
 const (
-	logPath     = "run.log"
 	defaultPort = "80"
+	logFilename = "run.log"
 )
 
 func main() {
+
+	ex, err := os.Executable()
+	if err != nil {
+		logger.Fatalf("could not execute dir path: %v", err)
+	}
+	exPath := filepath.Dir(ex)
+	logPath := exPath + logFilename
 
 	lf, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
 	if err != nil {
