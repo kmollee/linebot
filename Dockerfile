@@ -29,7 +29,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy the /etc_passwd file we created in the builder stage into /etc/passwd in
 # the target stage. This creates a new non-root user as a security best
 # practice.
-# COPY --from=0 /etc_passwd /etc/passwd
+# COPY --from=builder /etc_passwd /etc/passwd
 # Run as the new non-root by default
 # USER nobody
 RUN useradd -m heroku
