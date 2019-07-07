@@ -26,6 +26,5 @@ PORT=8000 ChannelSecret={line secret} ChannelAccessToken={Channel access token} 
 
 ## Friend this bot
 
-QRCODE: ![](https://qr-official.line.me/sid/L/mxo6926q.png)
-
+QRCODE: ![](image/qrcode.png)
 
