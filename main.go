@@ -16,9 +16,9 @@ import (
 
 type config struct {
 	Port              string `env:"PORT" envDefault:"8000"`
-	lineChannelSecret string `env:"ChannelSecret"`
-	linehannelToken   string `env:"ChannelAccessToken"`
-	witToekn          string `env:"WitToken"`
+	LineChannelSecret string `env:"ChannelAccessToken"`
+	LinehannelToken   string `env:"ChannelAccessToken"`
+	WitToekn          string `env:"WitToken"`
 }
 
 const (
@@ -44,14 +44,14 @@ func main() {
 	}
 
 	// setup line bot
-	b, err := newBot(cfg.lineChannelSecret, cfg.linehannelToken)
+	b, err := newBot(cfg.LineChannelSecret, cfg.LinehannelToken)
 	if err != nil {
 		logger.Error(err.Error())
 		panic(err.Error())
 	}
 
 	// setup wit bot
-	witClient = witai.NewClient(cfg.witToekn)
+	witClient = witai.NewClient(cfg.WitToekn)
 
 	http.HandleFunc("/", b.index)
 	http.HandleFunc("/callback", b.callback)
