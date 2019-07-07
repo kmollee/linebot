@@ -62,7 +62,6 @@ func (b *bot) callback(w http.ResponseWriter, r *http.Request) {
 						} else {
 							msg = linebot.NewTextMessage(res)
 						}
-						msg = linebot.NewTextMessage("ASK" + message.Text)
 
 					default:
 						msg = linebot.NewTextMessage(message.ID + ":" + message.Text + "I don't know what you mean?")
