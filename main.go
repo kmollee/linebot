@@ -10,6 +10,7 @@ import (
 	"github.com/google/logger"
 
 	// "github.com/mitchellh/mapstructure"
+	wolfram "github.com/Krognol/go-wolfram"
 	"github.com/pkg/errors"
 	witai "github.com/wit-ai/wit-go"
 )
@@ -19,6 +20,7 @@ type config struct {
 	LineChannelSecret string `env:"ChannelSecret"`
 	LinehannelToken   string `env:"ChannelAccessToken"`
 	WitToekn          string `env:"WitToken"`
+	WolframID         string `env:"WolframID"`
 }
 
 const (
@@ -28,6 +30,8 @@ const (
 
 var (
 	witClient *witai.Client
+	//Initialize a new client
+	wolframClient *wolfram.Client
 )
 
 func main() {
@@ -40,18 +44,23 @@ func main() {
 
 	cfg := config{}
 	if err := env.Parse(&cfg); err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Fatal(err)
 	}
 
 	// setup line bot
 	b, err := newBot(cfg.LineChannelSecret, cfg.LinehannelToken)
 	if err != nil {
-		logger.Error(err.Error())
-		panic(err.Error())
+		logger.Fatal(err)
 	}
 
 	// setup wit bot
 	witClient = witai.NewClient(cfg.WitToekn)
+
+	// setup wolfram client
+	wolframClient, err = newWolframClient(cfg.WolframID)
+	if err != nil {
+		logger.Fatal(err)
+	}
 
 	http.HandleFunc("/", b.index)
 	http.HandleFunc("/callback", b.callback)

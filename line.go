@@ -55,8 +55,14 @@ func (b *bot) callback(w http.ResponseWriter, r *http.Request) {
 					switch msgType {
 					case "greetings":
 						msg = linebot.NewTextMessage(message.ID + ":" + "Hi!")
-					case "wit/wikipedia_search_query":
-						msg = linebot.NewTextMessage(message.ID + ":" + "ASK" + message.Text)
+					case "wikipedia_search_query":
+						res, err := wolframQuery(message.Text)
+						if err != nil {
+							msg = linebot.NewTextMessage(message.ID + ":" + message.Text + "I don't know what you mean?")
+						} else {
+							msg = linebot.NewTextMessage(res)
+						}
+						msg = linebot.NewTextMessage("ASK" + message.Text)
 
 					default:
 						msg = linebot.NewTextMessage(message.ID + ":" + message.Text + "I don't know what you mean?")
