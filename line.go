@@ -55,7 +55,7 @@ func (b *bot) callback(w http.ResponseWriter, r *http.Request) {
 					switch msgType {
 					case "greetings":
 						msg = linebot.NewTextMessage(message.ID + ":" + "Hi!")
-					case "ask":
+					case "wit/wikipedia_search_query":
 						msg = linebot.NewTextMessage(message.ID + ":" + "ASK" + message.Text)
 
 					default:
