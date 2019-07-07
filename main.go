@@ -16,7 +16,7 @@ import (
 
 type config struct {
 	Port              string `env:"PORT" envDefault:"8000"`
-	LineChannelSecret string `env:"ChannelAccessToken"`
+	LineChannelSecret string `env:"ChannelSecret"`
 	LinehannelToken   string `env:"ChannelAccessToken"`
 	WitToekn          string `env:"WitToken"`
 }
